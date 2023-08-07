@@ -3,7 +3,6 @@ This cheat makes you autobhop when you hold down the spacebar in Left 4 Dead 2.
 此程序可以帮助你在求生之路2中实现自动连跳
 ## Disclaimer
 I am not responsible for bans that are a result of using this software. If you choose to use this software and you get banned its on you not me.  
-
 您不应该在VAC服务器上使用该程序，对于因使用此软件而导致的禁令，我概不负责。
 ## Content
 Thanks to https://github.com/KnifeLemon/Left4Dead2-Autobhop-CSharp. I made a modification based on this, fixed player_base_offset and m_flags_offset in the program, and changed Left 4 Dead 2 to Left 4 Dead 2 - Direct3D 9
