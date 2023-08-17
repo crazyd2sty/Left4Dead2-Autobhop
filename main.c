@@ -5,75 +5,74 @@
 #include <Windows.h>
 
 int main() {
-    // ²ÎÊý¹Ì¶¨Öµ
+    // Parameter fixed value
     const DWORD player_base_offset = 0x724B58;
     const DWORD m_flags_offset = 0xF0;
-
-    printf("Ô¤ÖÃµÄ»ùÖ·²ÎÊý:\r\n  PlayerBase offset = %lX\r\n  mFlags offset = %lX\r\n  Windows title = Left 4 Dead 2 - Direct3D 9\r\n  ",
+    printf("Preset base address parameters:\r\n  PlayerBase offset = %lX\r\n  mFlags offset = %lX\r\n  Windows title = Left 4 Dead 2 - Direct3D 9\r\n  ",
         player_base_offset, m_flags_offset);
 
-    puts("´ÓSteamÆô¶¯ÓÎÏ·.");
+    puts("Launch the game from Steam.");
 
 
-    // Ñ­»·»ñÈ¡ÓÎÏ·´°¿Ú
+    // Loop through the game window
     HWND l4d2_hwnd = NULL;
     while ((l4d2_hwnd = FindWindow(NULL, TEXT("Left 4 Dead 2 - Direct3D 9"))) == NULL) {
         Sleep(1000);
     }
 
-    puts("ÕÒµ½´°¿Ú£¬Çë¹Ø±ÕÓÎÏ·¶¯»­£¬10Ãëºó×¢Èë!");
+    puts("Find the window, close the game animation, and intervene in the process after 10 seconds!");
     Sleep(10000);
-    // »ñÈ¡½ø³ÌID
+    // Gets the process ID
     DWORD l4d2_process_id = 0;
     GetWindowThreadProcessId(l4d2_hwnd, &l4d2_process_id);
 
-    // ´ò¿ª½ø³Ì
+    // Open the process
   HANDLE l4d2_process = OpenProcess(PROCESS_VM_READ, FALSE, l4d2_process_id);
   if (l4d2_process == NULL || l4d2_process_id == 0) {
-    error("²»ÄÜ»ñÈ¡µ½½ø³ÌID!");
+    error("Unable to get process ID!");
   }
 
-  // »ñÈ¡Ò»¸ö¾ä±ú£¬ÓÃÓÚÔÚ½ø³ÌÖÐÑ­»·±éÀúÒÑ¼ÓÔØµÄÄ£¿é¡£
+  // Gets a handle to loop through the loaded modules in the processã€‚
   HANDLE hSnapshot = CreateToolhelp32Snapshot(
       TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, l4d2_process_id);
   if (hSnapshot == NULL) {
-    error("ÎÞ·¨´´½¨¿ìÕÕ!");
+    error("Unable to create snapshot!");
   }
 
-  // »ñÈ¡client.dll»ùÖ·
+  // Obtain the base address .dll client
   const DWORD client_base_address = get_client_dll_base_address(hSnapshot);
   CloseHandle(hSnapshot);
   if (client_base_address == 0) {
-    error("²»ÄÜÕÒµ½client.dllµÄ»ùÖ·!");
+    error("The base address of the client .dll could not be found!");
   }
 
-  puts("×¢Èë³É¹¦!ÎåÃëºóÒþ²Ø½ø³Ì!");
-  // Òþ²Ø¿ØÖÆÌ¨
+  puts("Succeed! Hide the process after five seconds!");
+  // Hide the console
   Sleep(5000);
   HWND console_window = GetConsoleWindow();
   ShowWindow(console_window, SW_HIDE);
-  // Bhop Ñ­»·
+  // Bhop å¾ªçŽ¯
   DWORD player_base_pointer = 0;
   DWORD m_flags = 0;
   while (TRUE) {
-      // ¼ì²é´°¿ÚÊÇ·ñ´æÔÚ
+      // Check if the window exists
       if (!IsWindow(l4d2_hwnd)) {
-          // ÍË³ö³ÌÐò
+          // Exit the program
           ExitProcess(0);
       }
 
-    // ¼ì²é¿Õ¸ñ¼üÊÇ·ñ°´ÏÂ.
+    // Check if the spacebar is pressed.
     if (GetAsyncKeyState(' ') & 0x8000) {
-      // ¶ÁÈ¡Íæ¼Ò»ù±¾Ö¸Õë
+      // Read the player base pointer
       ReadProcessMemory(
           l4d2_process, (char *)client_base_address + player_base_offset,
           &player_base_pointer, sizeof(player_base_pointer), NULL);
-      // ´Ól4d2¶ÁÈ¡mFlags±äÁ¿
+      // Read the mFlags variable from l4d2
       ReadProcessMemory(l4d2_process,
                         (char *)player_base_pointer + m_flags_offset, &m_flags,
                         sizeof(m_flags), NULL);
 
-      // autobhop Ö÷³ÌÐò
+      // Autobhop main program
       if (m_flags != 0x80 && m_flags != 0x82 && m_flags != 0x280 &&
           m_flags != 0x282) {
         SendMessage(l4d2_hwnd, WM_KEYDOWN, ' ', 0x390000);
