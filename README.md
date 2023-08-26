@@ -5,9 +5,9 @@ This cheat makes you autobhop when you hold down the spacebar in Left 4 Dead 2.
 I am not responsible for bans that are a result of using this software. If you choose to use this software and you get banned its on you not me.  
 您不应该在VAC服务器上使用该程序，对于因使用此软件而导致的禁令，我概不负责。
 ## Content
-Thanks to https://github.com/KnifeLemon/Left4Dead2-Autobhop-CSharp. I made a modification based on this, fixed player_base_offset and m_flags_offset in the program, and changed Left 4 Dead 2 to Left 4 Dead 2 - Direct3D 9
+Thanks to [https://github.com/KnifeLemon/Left4Dead2-Autobhop-CSharp](https://github.com/mads256h/l4d2-autobhop). I made a modification based on this, fixed player_base_offset and m_flags_offset in the program, and changed Left 4 Dead 2 to Left 4 Dead 2 - Direct3D 9
 For the sake of beauty, I hide the console and end the program together when the program exits.   
-在此感谢https://github.com/KnifeLemon/Left4Dead2-Autobhop-CSharp. 我在此基础上做了修改，将player_base_offset与m_flags_offset固定在程序内，并将Left 4 Dead 2更改成Left 4 Dead 2 - Direct3D 9
+在此感谢[https://github.com/KnifeLemon/Left4Dead2-Autobhop-CSharp](https://github.com/mads256h/l4d2-autobhop). 我在此基础上做了修改，将player_base_offset与m_flags_offset固定在程序内，并将Left 4 Dead 2更改成Left 4 Dead 2 - Direct3D 9
 为了美观我将控制台隐藏，并在程序退出时将此程序一起结束。 
 ## Running
 After compiling with 64x Release, double-click to run it.  
