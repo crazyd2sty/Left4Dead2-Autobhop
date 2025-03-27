@@ -8,7 +8,7 @@
 
 int main() {
     // Parameter fixed value
-    const DWORD player_base_offset = 0x724B58;
+    const DWORD player_base_offset = 0x726BD8;
     const DWORD m_flags_offset = 0xF0;
     printf("Preset base address parameters:\r\n  PlayerBase offset = %lX\r\n  mFlags offset = %lX\r\n  Windows title = Left 4 Dead 2 - Direct3D 9\r\n  ",
         player_base_offset, m_flags_offset);
