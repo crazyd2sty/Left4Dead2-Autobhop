@@ -101,18 +101,24 @@ int main(int argc, char* argv[]) {
         error("Could not open process or get process id!");
     }
 
-    // Get a handle for looping through loaded modules in the process.
-    HANDLE hSnapshot = CreateToolhelp32Snapshot(
-        TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, l4d2_process_id);
-    if (hSnapshot == NULL) {
-        error("Could not create snapshot!");
-    }
+    // Loop until we get the client.dll base address
+    DWORD client_base_address = 0;
+    while (client_base_address == 0) {
+        // Get a handle for looping through loaded modules in the process.
+        HANDLE hSnapshot = CreateToolhelp32Snapshot(
+            TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, l4d2_process_id);
+        if (hSnapshot == NULL) {
+            error("Could not create snapshot!");
+        }
 
-    // Get the client.dll base address.
-    const DWORD client_base_address = get_client_dll_base_address(hSnapshot);
-    CloseHandle(hSnapshot);
-    if (client_base_address == 0) {
-        error("Could not get client.dll base address!");
+        // Get the client.dll base address.
+        client_base_address = get_client_dll_base_address(hSnapshot);
+        CloseHandle(hSnapshot);
+
+        if (client_base_address == 0) {
+            puts("Game loading...");
+            Sleep(3000);
+        }
     }
 
     puts("Autobhop is now functional!");
@@ -154,7 +160,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        Sleep(3); 
+        Sleep(0);
     }
 }
-
