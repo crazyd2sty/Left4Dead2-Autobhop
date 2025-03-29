@@ -92,6 +92,6 @@ int main() {
             }
         }
 
-        Sleep(0); // Increase sleep time to reduce CPU usage
+        Sleep(0);
     }
 }
